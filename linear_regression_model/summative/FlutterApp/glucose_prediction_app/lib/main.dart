@@ -17,7 +17,11 @@ class GlucosePredictionApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
         useMaterial3: true,
       ),
-      home: const HomePage(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const HomePage(),
+        '/about': (context) => const AboutPage(),
+      },
     );
   }
 }
@@ -36,7 +40,7 @@ class _HomePageState extends State<HomePage> {
   bool _isLoading = false;
 
   // API endpoint
-  static const String apiUrl = 'https://linear-regression-model2.onrender.com/predict';
+  static const String apiUrl = 'https://linear-regression-model-klxi.onrender.com/predict';
 
   // Input fields with their constraints
   final Map<String, Map<String, dynamic>> inputFields = {
@@ -137,6 +141,15 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: const Text('Glucose Level Predictor'),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.info_outline),
+            tooltip: 'About',
+            onPressed: () {
+              Navigator.pushNamed(context, '/about');
+            },
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -335,5 +348,202 @@ class _HomePageState extends State<HomePage> {
       default:
         return Icons.input;
     }
+  }
+}
+
+// About Page
+class AboutPage extends StatelessWidget {
+  const AboutPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('About'),
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Center(
+              child: Column(
+                children: [
+                  Icon(
+                    Icons.health_and_safety,
+                    size: 80,
+                    color: Colors.teal,
+                  ),
+                  SizedBox(height: 16),
+                  Text(
+                    'Glucose Level Predictor',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.teal,
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'Version 1.0.0',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 32),
+            const Text(
+              'About This App',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 12),
+            const Text(
+              'This application uses advanced machine learning algorithms to predict glucose levels based on various patient parameters. The prediction model considers factors such as age, gender, weight, heart rate, and other physiological indicators to provide accurate glucose level estimations.',
+              style: TextStyle(fontSize: 16),
+            ),
+            const SizedBox(height: 24),
+            const Text(
+              'Key Features',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 12),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildFeatureItem(
+                  icon: Icons.psychology,
+                  text: 'AI-powered glucose level prediction',
+                ),
+                _buildFeatureItem(
+                  icon: Icons.assignment,
+                  text: 'Comprehensive patient data form',
+                ),
+                _buildFeatureItem(
+                  icon: Icons.verified_user,
+                  text: 'Input validation and error handling',
+                ),
+                _buildFeatureItem(
+                  icon: Icons.cloud,
+                  text: 'Real-time API integration',
+                ),
+                _buildFeatureItem(
+                  icon: Icons.phone_android,
+                  text: 'Mobile-optimized interface',
+                ),
+              ],
+            ),
+            const SizedBox(height: 24),
+            const Text(
+              'How It Works',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 12),
+            const Text(
+              '1. Enter patient information in the form\n'
+              '2. Validate all required fields\n'
+              '3. Send data to the machine learning model\n'
+              '4. Receive glucose level prediction\n'
+              '5. View results with appropriate recommendations',
+              style: TextStyle(fontSize: 16),
+            ),
+            const SizedBox(height: 24),
+            const Text(
+              'Important Notice',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.orange,
+              ),
+            ),
+            const SizedBox(height: 12),
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.orange[50],
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: Colors.orange, width: 1),
+              ),
+              child: const Text(
+                'This app is for educational and research purposes only. Always consult with healthcare professionals for medical decisions. The predictions provided should not be used as a substitute for professional medical advice.',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+            ),
+            const SizedBox(height: 32),
+            const Center(
+              child: Column(
+                children: [
+                  Text(
+                    'Developed by',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    'Sheryl Atieno Otieno',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.teal,
+                    ),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    'ALU Student | Machine Learning Engineer',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFeatureItem({required IconData icon, required String text}) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12.0),
+      child: Row(
+        children: [
+          Icon(
+            icon,
+            color: Colors.teal,
+            size: 20,
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              text,
+              style: const TextStyle(fontSize: 16),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
