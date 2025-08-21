@@ -142,14 +142,76 @@ class _HomePageState extends State<HomePage> {
         title: const Text('Glucose Level Predictor'),
         centerTitle: true,
         actions: [
-          IconButton(
-            icon: const Icon(Icons.info_outline),
-            tooltip: 'About',
+          ElevatedButton.icon(
             onPressed: () {
               Navigator.pushNamed(context, '/about');
             },
+            icon: const Icon(Icons.info, size: 18),
+            label: const Text('About'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.teal,
+              foregroundColor: Colors.white,
+              elevation: 0,
+            ),
           ),
+          const SizedBox(width: 8),
         ],
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.teal,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.health_and_safety,
+                    color: Colors.white,
+                    size: 48,
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'Glucose Predictor',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    'AI-Powered Health App',
+                    style: TextStyle(
+                      color: Colors.white70,
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.home, color: Colors.teal),
+              title: const Text('Home'),
+              subtitle: const Text('Prediction form'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.info, color: Colors.teal),
+              title: const Text('About'),
+              subtitle: const Text('App information'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/about');
+              },
+            ),
+          ],
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -209,22 +271,19 @@ class _HomePageState extends State<HomePage> {
                                             valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                                           ),
                                         ),
-                                        SizedBox(width: 8),
+                                        SizedBox(width: 10),
                                         Text('Predicting...'),
                                       ],
                                     )
-                                  : const Text(
-                                      'Predict',
-                                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                                    ),
+                                  : const Text('Predict Glucose Level', style: TextStyle(fontSize: 16)),
                             ),
                           ),
                           const SizedBox(width: 10),
                           ElevatedButton(
                             onPressed: _clearFields,
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.grey[200],
-                              foregroundColor: Colors.black87,
+                              backgroundColor: Colors.grey[600],
+                              foregroundColor: Colors.white,
                               padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),
@@ -234,9 +293,9 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 20),
                       if (_result.isNotEmpty)
                         Card(
+                          margin: const EdgeInsets.only(top: 20),
                           color: _result.startsWith('Error') ? Colors.red[50] : Colors.green[50],
                           child: Padding(
                             padding: const EdgeInsets.all(16.0),
@@ -245,26 +304,26 @@ class _HomePageState extends State<HomePage> {
                                 Icon(
                                   _result.startsWith('Error') ? Icons.error : Icons.check_circle,
                                   size: 40,
-                                  color: _result.startsWith('Error') ? Colors.red : Colors.green,
+                                  color: _result.startsWith('Error') ? Colors.red[700] : Colors.green[700],
                                 ),
                                 const SizedBox(height: 8),
                                 Text(
-                                  'Result',
+                                  _result,
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                     color: _result.startsWith('Error') ? Colors.red[700] : Colors.green[700],
                                   ),
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  _result,
                                   textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: _result.startsWith('Error') ? Colors.red[700] : Colors.green[700],
-                                  ),
                                 ),
+                                if (!_result.startsWith('Error'))
+                                  const Text(
+                                    'Normal range: 70-100 mg/dL (fasting)',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
                               ],
                             ),
                           ),
@@ -280,41 +339,36 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildInputField(String fieldName, Map<String, dynamic> fieldInfo) {
+  Widget _buildInputField(String fieldName, Map<String, dynamic> constraints) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16.0),
       child: TextFormField(
         controller: _controllers[fieldName],
-        keyboardType: fieldInfo['type'] == 'int' 
-            ? TextInputType.number 
-            : const TextInputType.numberWithOptions(decimal: true),
         decoration: InputDecoration(
-          labelText: fieldInfo['label'],
-          hintText: 'Range: ${fieldInfo['min']} - ${fieldInfo['max']}',
-          border: const OutlineInputBorder(),
+          labelText: constraints['label'],
           prefixIcon: Icon(_getIconForField(fieldName)),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+          filled: true,
+          fillColor: Colors.grey[50],
+          helperText: 'Range: ${constraints['min']} - ${constraints['max']}',
         ),
+        keyboardType: const TextInputType.numberWithOptions(decimal: true),
         validator: (value) {
           if (value == null || value.trim().isEmpty) {
-            return 'This field is required';
+            return 'Please enter ${constraints['label'].toLowerCase()}';
           }
 
+          double? numValue;
           try {
-            double numValue;
-            if (fieldInfo['type'] == 'int') {
-              numValue = double.parse(value.trim());
-              if (numValue != numValue.toInt()) {
-                return 'Please enter a whole number';
-              }
-            } else {
-              numValue = double.parse(value.trim());
-            }
-
-            if (numValue < fieldInfo['min'] || numValue > fieldInfo['max']) {
-              return 'Value must be between ${fieldInfo['min']} and ${fieldInfo['max']}';
-            }
+            numValue = double.parse(value.trim());
           } catch (e) {
             return 'Please enter a valid number';
+          }
+
+          if (numValue < constraints['min'] || numValue > constraints['max']) {
+            return 'Value must be between ${constraints['min']} and ${constraints['max']}';
           }
 
           return null;
@@ -326,9 +380,9 @@ class _HomePageState extends State<HomePage> {
   IconData _getIconForField(String fieldName) {
     switch (fieldName) {
       case 'AGE':
-        return Icons.calendar_today;
-      case 'GENDER':
         return Icons.person;
+      case 'GENDER':
+        return Icons.wc;
       case 'WEIGHT':
         return Icons.fitness_center;
       case 'SKIN_COLOR':
@@ -430,19 +484,19 @@ class AboutPage extends StatelessWidget {
                 ),
                 _buildFeatureItem(
                   icon: Icons.assignment,
-                  text: 'Comprehensive patient data form',
+                  text: 'Comprehensive patient parameter input',
                 ),
                 _buildFeatureItem(
-                  icon: Icons.verified_user,
-                  text: 'Input validation and error handling',
+                  icon: Icons.speed,
+                  text: 'Real-time prediction results',
                 ),
                 _buildFeatureItem(
-                  icon: Icons.cloud,
-                  text: 'Real-time API integration',
+                  icon: Icons.security,
+                  text: 'Secure and private data handling',
                 ),
                 _buildFeatureItem(
                   icon: Icons.phone_android,
-                  text: 'Mobile-optimized interface',
+                  text: 'User-friendly mobile interface',
                 ),
               ],
             ),
@@ -456,11 +510,11 @@ class AboutPage extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             const Text(
-              '1. Enter patient information in the form\n'
-              '2. Validate all required fields\n'
-              '3. Send data to the machine learning model\n'
-              '4. Receive glucose level prediction\n'
-              '5. View results with appropriate recommendations',
+              '1. Enter patient information including age, gender, weight, and vital signs\n'
+              '2. The app validates all input parameters\n'
+              '3. Data is sent securely to our machine learning model\n'
+              '4. The model processes the information and returns a glucose level prediction\n'
+              '5. Results are displayed with contextual information',
               style: TextStyle(fontSize: 16),
             ),
             const SizedBox(height: 24),
@@ -477,64 +531,52 @@ class AboutPage extends StatelessWidget {
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: Colors.orange[50],
+                border: Border.all(color: Colors.orange[300]!),
                 borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: Colors.orange, width: 1),
               ),
               child: const Text(
-                'This app is for educational and research purposes only. Always consult with healthcare professionals for medical decisions. The predictions provided should not be used as a substitute for professional medical advice.',
+                'This application is for educational and research purposes only. Predictions should not be used as a substitute for professional medical advice, diagnosis, or treatment. Always consult with a healthcare professional for medical concerns.',
                 style: TextStyle(
                   fontSize: 14,
                   fontStyle: FontStyle.italic,
                 ),
               ),
             ),
-            const SizedBox(height: 32),
-            const Center(
-              child: Column(
-                children: [
-                  Text(
-                    'Developed by',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey,
-                    ),
-                  ),
-                  SizedBox(height: 4),
-                  Text(
-                    'Sheryl Atieno Otieno',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.teal,
-                    ),
-                  ),
-                  SizedBox(height: 4),
-                  Text(
-                    'ALU Student | Machine Learning Engineer',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey,
-                    ),
-                  ),
-                ],
+            const SizedBox(height: 24),
+            const Text(
+              'Developer Information',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
               ),
+            ),
+            const SizedBox(height: 12),
+            const Text(
+              'Developed by: Sheryl Atieno Otieno\n'
+              'Technology Stack: Flutter, Dart, Python, Machine Learning\n'
+              'Backend: FastAPI with scikit-learn\n'
+              'Deployment: Render Cloud Platform',
+              style: TextStyle(fontSize: 16),
             ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        backgroundColor: Colors.teal,
+        child: const Icon(Icons.home, color: Colors.white),
       ),
     );
   }
 
   Widget _buildFeatureItem({required IconData icon, required String text}) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12.0),
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
         children: [
-          Icon(
-            icon,
-            color: Colors.teal,
-            size: 20,
-          ),
+          Icon(icon, color: Colors.teal, size: 24),
           const SizedBox(width: 12),
           Expanded(
             child: Text(
