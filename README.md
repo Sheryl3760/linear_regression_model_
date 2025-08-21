@@ -1,10 +1,9 @@
-# Glucose Level Prediction with Linear Regression – Health Focused 🩺
+# Glucose Level Prediction with Linear Regression
 
 **Mission**: Diabetes and other blood sugar disorders pose a growing global health challenge, often going undetected until serious complications arise. This project leverages a simple linear regression model to predict blood glucose levels from health and lifestyle factors, providing a data-driven approach to early detection, preventive care, and public health awareness.
 
-## � GitHub Repository
-All source files are hosted here:
-➡️ https://github.com/MichaelMusembi/linear_regression_model2
+## 🔗 GitHub Repository
+All source files are hosted here: ➡️ https://github.com/Sheryl3760/linear_regression_model_
 
 Contents include:
 - **linear_regression/**: Jupyter notebook for data analysis, preprocessing, and model training
@@ -12,9 +11,9 @@ Contents include:
 - **FlutterApp/**: Flutter mobile app to consume and visualize API predictions
 
 ## 📡 Public API Endpoint (Live)
-🔗 **Base URL**: https://linear-regression-model2.onrender.com/
+🔗 **Base URL**: https://linear-regression-model-klxi.onrender.com/
 
-📘 **Swagger UI Docs**: https://linear-regression-model2.onrender.com/docs
+📘 **Swagger UI Docs**: https://linear-regression-model-klxi.onrender.com/docs
 
 **YouTube Demo Video URL**: https://youtu.be/vaVTie3-xiU
 
@@ -43,8 +42,7 @@ POST /predict
 ```
 
 ## 🧠 Dataset Source
-We use real-world data sourced from Kaggle:
-📊 [Glucose Level Estimation Dataset](https://www.kaggle.com/datasets/fatimaafzaal/glucose-level-estimation?utm_source=chatgpt.com)
+We use real-world data sourced from Kaggle: 📊 [Glucose Level Estimation Dataset](https://www.kaggle.com/datasets/fatimaafzaal/glucose-level-estimation?utm_source=chatgpt.com)
 
 ## 📱 How to Run the Mobile App (Flutter)
 The Flutter app consumes the API and provides a mobile interface to enter inputs and view glucose predictions.
@@ -58,8 +56,8 @@ The Flutter app consumes the API and provides a mobile interface to enter inputs
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/MichaelMusembi/linear_regression_model2.git
-cd linear_regression_model2/linear_regression_model/summative/FlutterApp/glucose_prediction_app
+git clone https://github.com/Sheryl3760/linear_regression_model_.git
+cd linear_regression_model_/linear_regression_model/summative/FlutterApp/glucose_prediction_app
 ```
 
 2. **Install dependencies**
@@ -77,7 +75,7 @@ On emulator or real device, input your health values and hit **Predict** to view
 *Make sure your emulator/device is connected to the internet to access the public API.*
 
 ## Contributors
-**Michael Musembi** – @MichaelMusembi
+**Sheryl Atieno Otieno** – @Sheryl3760
 
 ## License
-MIT License © 2025 Michael Musembi
+MIT License © 2025 Sheryl Atieno Otieno
