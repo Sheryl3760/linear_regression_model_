@@ -3,7 +3,7 @@
 **Mission**: Diabetes and other blood sugar disorders pose a growing global health challenge, often going undetected until serious complications arise. This project leverages a simple linear regression model to predict blood glucose levels from health and lifestyle factors, providing a data-driven approach to early detection, preventive care, and public health awareness.
 
 ## 🔗 GitHub Repository
-All source files are hosted here: ➡️ https://github.com/Sheryl3760/linear_regression_model_
+All source files are hosted here:
 
 Contents include:
 - **linear_regression/**: Jupyter notebook for data analysis, preprocessing, and model training
@@ -15,7 +15,7 @@ Contents include:
 
 📘 **Swagger UI Docs**: https://linear-regression-model-klxi.onrender.com/docs
 
-**YouTube Demo Video URL**: https://youtu.be/vaVTie3-xiU
+**YouTube Demo Video URL**:
 
 ## ➕ Example API Request
 ```json
