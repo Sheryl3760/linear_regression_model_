@@ -10,14 +10,14 @@ Contents include:
 - **API/**: FastAPI backend for serving predictions  
 - **FlutterApp/**: Flutter mobile app to consume and visualize API predictions
 
-## 📡 Public API Endpoint (Live)
+##  Public API Endpoint (Live)
 🔗 **Base URL**: https://linear-regression-model-klxi.onrender.com/
 
-📘 **Swagger UI Docs**: https://linear-regression-model-klxi.onrender.com/docs
+ **Swagger UI Docs**: https://linear-regression-model-klxi.onrender.com/docs
 
-**YouTube Demo Video URL**:
+**YouTube Demo Video URL**: https://youtu.be/H0P_ZsXFGRs?si=8NP3Kj02qGNepqOH
 
-## ➕ Example API Request
+##  Example API Request
 ```json
 POST /predict
 {
@@ -34,25 +34,25 @@ POST /predict
 }
 ```
 
-## ✔️ Example Response
+##  Example Response
 ```json
 {
   "predicted_glucose_level": 98.75
 }
 ```
 
-## 🧠 Dataset Source
+##  Dataset Source
 We use real-world data sourced from Kaggle: 📊 [Glucose Level Estimation Dataset](https://www.kaggle.com/datasets/fatimaafzaal/glucose-level-estimation?utm_source=chatgpt.com)
 
-## 📱 How to Run the Mobile App (Flutter)
+##  How to Run the Mobile App (Flutter)
 The Flutter app consumes the API and provides a mobile interface to enter inputs and view glucose predictions.
 
-### 🚀 Prerequisites
+###  Prerequisites
 - Flutter SDK (version ≥ 3.10)
 - Android Studio or Visual Studio Code
 - Internet access to connect to the public API
 
-### 🛠️ Installation Steps
+###  Installation Steps
 
 1. **Clone the repository**
 ```bash
